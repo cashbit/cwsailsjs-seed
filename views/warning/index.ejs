@@ -1,0 +1,29 @@
+<div class="container">
+	<h3>Warnings</h3>
+	<table class='table'>
+		<tr>
+			<th>Message</th>
+			<th></th>
+			<th></th>
+		</tr>
+		
+
+		<% _.each(records, function(record) { %>
+		<tr data-id="<%= record.id %>" data-model="record">
+			<td><%= record.inName() %></td>
+
+			<td><a href="/<%= record.classname %>/show/<%= record.recordid %>" class="btn btn-sm btn-primary">Show</a></td>
+			
+			<td style="width:82px"><form action="../warning/setreaded/<%= record.id %>" method="POST">
+				
+				<input id="deletebtn_<%= record.id %>" type="button" class="delconfirmbtn<%= record.id %> btn btn-sm btn-danger" value="Set as readed" onclick="$('.delconfirmbtn<%= record.id %>').toggleClass('hidden');"/>
+				
+				<input id="confirm_btn<%= record.id %>"type="submit" class="delconfirmbtn<%= record.id %> btn btn-sm btn-danger hidden" value="Confirm"/>
+				
+				<input type="hidden" name="_csrf" value="<%= _csrf %>" />
+			</form></td>
+		</tr> 
+
+		<% }) %>
+	</table>
+</div>

@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><% if(session.UserGroupConfig){ %><%= session.UserGroupConfig.appName %><%} else {%><%- title %><% } %><% if (typeof(record) != "undefined") { %><%= record.inName ? " :: " + record.inName() : "" %><% } %><% if (typeof(subtitle) != "undefined") { %><%= " :: " + subtitle %><% } %></title>
+
+    <!-- Viewport mobile tag for sensible mobile support -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    
+    <!--  
+        Stylesheets and Preprocessors
+        ==============================
+
+        You can always bring in CSS files manually with `link` tags, or asynchronously
+        on the client using a solution like AMD (RequireJS).  Or, if you like, you can
+        take advantage of Sails' boilerplate asset management.
+
+        By default, tylesheets from your `assets/linker/styles` folder are included
+        here automatically.  Both CSS (.css) and LESS (.less) are supported.
+        In production, your styles will be minified and concatenated into a single file.
+        
+        To customize any part of the built-in behavior, just edit your Gruntfile.
+        For example, here are a few things you could do:
+            
+            + Change the order of your CSS files
+            + Import stylesheets from other directories
+            + Use a different or additional preprocessor, like SASS, SCSS or Stylus
+    -->
+
+    <!--STYLES-->
+    <link rel="stylesheet" href="/linker/styles/bootstrap-formhelpers.min.css">
+    <link rel="stylesheet" href="/linker/styles/bootstrap.css">
+    <link rel="stylesheet" href="/linker/styles/custom.css">
+    <link rel="stylesheet" href="/linker/styles/dropzone.css">
+    <!--STYLES END-->
+
+    <!--Added this so the client has access to the csrf tag and it's grabbed first service side on every page -->
+    <script type="text/javascript">
+      window.overlord = { csrf: "<%= _csrf %>" };
+    </script>
+
+    <!-- The sound file tht will play on activity events -->
+    <audio id="chatAudio">
+      <source src="/sounds/notify.ogg" type="audio/ogg">
+      <source src="/sounds/notify.mp3" type="audio/mpeg">
+      <source src="/sounds/notify.wav" type="audio/wav">
+    </audio>
+
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/"><% if(session.UserGroupConfig){ %><%= session.UserGroupConfig.appName %><%} else {%><%- title %><% } %></a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <% if (session.authenticated) { %>
+              <% _.each(session.UserGroupConfig.navmenu, function(menuItem) { %> 
+              <li ><a class="navbarlink" href="/<%= menuItem.controller %>"><%= menuItem.title %></a></li>
+              <% }) %>
+              <li ><a class="navbarlink" href="/warning">Warnings <span id="warningCounter" class="badge">0</span> </a></li>
+              <li ><a class="navbarlink" href="/meplus/show/<%= session.User.id %>">Me <span id="meplusCounter" class="badge">0</span></a> </li>
+            <% } %>
+            <% if (session.authenticated && session.User.admin) { %>
+            <li><a class="navbarlink" href="/user">Users</a></li>
+            <% } %>
+            <% if (session.authenticated && session.User.group == 'mam') { %>
+            <li><a class="navbarlink" href="/mamkart">Kart <span id="itemKartCounter" class="badge">0</span></a></li>
+            <% } %>
+          </ul>
+          <div class="navbar-right">
+            <% if (session.authenticated) { %>
+              <ul class="nav navbar-nav">
+                <li><a href="javascript:meplus();">Me+</a></li>
+              </ul>
+              <form class="navbar-form navbar-left" action="/search">
+                <div class="form-group">
+                  <input type="text" placeholder="search" name="searchText" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-success">Search</button>
+                <input type="hidden" name="_csrf" value="<%= _csrf %>" />
+              </form>
+              <a class="btn btn-default navbar-btn navbar-right" href="/session/destroy">sign-out</a>
+            <% } %>
+          </div>
+          <% if (!session.authenticated) { %>
+            <form class="navbar-form navbar-right" action="/session/create">
+              <div class="form-group">
+                <input type="text" placeholder="Email" name="email" class="form-control">
+              </div>
+              <div class="form-group">
+                <input type="password" placeholder="Password" name="password" class="form-control">
+              </div>
+              <button type="submit" class="btn btn-success">Sign in</button>
+              <input type="hidden" name="_csrf" value="<%= _csrf %>" />
+            </form>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  
+
+  <% if (typeof(flash)!="undefined") {%>
+
+    <% if(flash.err) { %>
+
+    <div class="container">
+      <div class="alert alert-danger">
+        <a class="close" data-dismiss="alert">x</a>
+      <% Object.keys(flash.err).forEach(function(error) { %>
+        <div><%= error %> : <%= flash.err[error][0] ? flash.err[error][0].message : flash.err[error].message%></div>
+      <% }) %>
+      </div>
+    </div>
+    <% flash = {} %>
+    <% } %>
+
+  <% } %>
+
+
+    <% if (req.session.breadCrumbs) {%>
+    <div class="container">
+    <ol class="breadcrumb" style="margin-bottom:0px">
+      <li> Recent </li>
+      <% _.each(req.session.breadCrumbs, function(breadCrumb) { %>
+          <li><a class="breadCrumbLink" href="<%= breadCrumb.url %>"><%= breadCrumb.text %></a></li>
+      <% }) %>
+    </ol>
+    </div>
+    <% } %>
+
+    <% if (req.session.workflow) {%>
+    <br/>
+    <div class="container"><div class="well">
+      <div class="row">
+        <div class="col-md-12"><b>Goal: <%=  req.session.workflow.title %></b></div>
+      </div>
+      <div class="row">
+        
+        <div class="col-md-12">Steps:
+        <%  var i=-1; 
+            _.each(req.session.workflow.steps, function(step) {  
+              i++;  %>
+            <% if (i > 0) { %>&gt;&gt;<% } %>
+            <% if (i == req.session.workflowActiveStep){ %>
+              <b><%= step.title %></b>
+            <% } else { %>
+              <%= step.title %>
+            <% } %>
+           
+        <% })%>
+         </div>
+      </div>
+      <div class="row">
+        
+        <% if (!req.session.workflow.steps[req.session.workflowActiveStep].pathname) { %>
+          <% if (req.session.workflowActiveStep < req.session.workflow.steps.length-1){ %>
+          <div class="col-md-10"><h6>Hint: <%= req.session.workflow.steps[req.session.workflowActiveStep].description %></h6></div>
+          <div class="col-md-1"><a href="/workflow/next">Next &gt;&gt;</a></div>
+          <% } else { %>
+            <div class="col-md-11"><h6>Hint: <%= req.session.workflow.steps[req.session.workflowActiveStep].description %></h6></div>
+          <% } %>
+        <% } else { %>
+            <div class="col-md-11"><h6>Hint: <%= req.session.workflow.steps[req.session.workflowActiveStep].description %></h6></div>
+        <% } %>
+        <div class="col-md-1"><a href="/workflow/end">Finished !</a></div>
+      </div>
+    </div></div>
+    <% } %>
+
+
+    <%- body %>
+    <!--
+    <div class="container">
+      <hr>
+      <footer class="footer pull-right">
+        <div>
+          <a href="http://celeweb.eu/">SIADMI by Celeweb SA</a> 
+          <div>Siad Macchine Impianti Web Application Portal</div>
+          <div>Support: <a href="mailto:siamigo@celeweb.eu">siamigo@celeweb.eu</a></div>
+        </div>
+      </footer>
+    </div>
+    -->
+      <div class="_comments foot-pre-footer">
+      </div>
+      <footer>
+          <div class="_comments foot-fixed-bottom">
+            <div>
+              <hr />
+              <div style="margin-left:10px;margin-right:10px" class="pull-right"><button onclick="_comments.toggle();" class="btn btn-default btn-sm"><span id="comment_openclose" class="glyphicon glyphicon-chevron-up"></span></button></div>
+              <p style="height:140px;max-height:140px" id="comment_content">
+                &nbsp;
+              </p>
+              <p>
+                    <div style="margin-left:10px;margin-right:10px" class="input-group">
+                          <input id="comment_comment" type="text" class="form-control" placeholder="type here to comment" value="" />
+                          <span class="input-group-btn">
+                            <a class="btn btn-default" type="button" href="javascript:_comments.send()"><span class="glyphicon glyphicon-send"></span></a>
+                          </span>            
+                    </div>
+              </p>
+            </div>
+          </div>
+      </footer>
+    <script type="text/javascript">
+      var globalUserId = "<%= session.User ? session.User.id : '' %>" ;
+    </script>
+
+    <!--
+        Client-side Templates
+        ========================
+
+    		HTML templates are important prerequisites of modern, rich client applications.
+        To work their magic, frameworks like Backbone, Angular, Ember, and Knockout require
+        that you load these templates client-side.
+
+        By default, your Gruntfile is configured to automatically load and precompile
+        client-side JST templates in your `assets/linker/templates` folder, then
+        include them here automatically.
+        
+        To customize this behavior to fit your needs, just edit your Gruntfile.
+        For example, here are a few things you could do:
+
+            + Import templates from other directories
+            + Use a different template engine (handlebars, jade, dust, etc.)
+            + Internationalize your templates using a server-side stringfile
+              before they're served.
+    -->
+
+    <!--TEMPLATES-->
+    <script type="text/javascript" src="/jst.js"></script>
+    <!--TEMPLATES END-->
+
+
+    <!--
+
+      Client-side Javascript
+      ========================
+
+      You can always bring in JS files manually with `script` tags, or asynchronously
+      on the client using a solution like AMD (RequireJS).  Or, if you like, you can 
+      take advantage of Sails' boilerplate asset management.
+
+      By default, filesin your `assets/linker/js` folder are included here
+      automatically.  Both JavaScript (.js) and CoffeeScript (.coffee) are supported.
+      In production, your scripts will be minified and concatenated into a single file.
+      
+      To customize any part of the built-in behavior, just edit your Gruntfile.
+      For example, here are a few things you could do:
+          
+          + Change the order of your scripts
+          + Import scripts from other directories
+          + Use a different preprocessor, like TypeScript
+
+    -->
+    <!--SCRIPTS-->
+    <script src="/linker/js/socket.io.js"></script>
+    <script src="/linker/js/sails.io.js"></script>
+    <script src="/linker/js/app.js"></script>
+    <script src="/linker/js/jquery.js"></script>
+    <script src="/linker/js/jquery.validate.min.js"></script>
+    <script src="/linker/js/SiadMiGo.js"></script>
+    <script src="/linker/js/_crud.js"></script>
+    <script src="/linker/js/bootstrap-formhelpers.js"></script>
+    <script src="/linker/js/bootstrap.js"></script>
+    <script src="/linker/js/customValidate.js"></script>
+    <script src="/linker/js/dropzone.js"></script>
+    <script src="/linker/js/underscore.js"></script>
+    <script src="/linker/js/comments.js"></script>
+  </body>
+</html>

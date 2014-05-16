@@ -1,0 +1,40 @@
+<div class="container">
+	<% _.each(config.menuEntities, function(row) { %>
+	<div class="well">
+		<div class="row">
+			<% _.each(row, function(menuEntity) { 
+				console.log(menuEntity) ;
+				var localMenuEntity = {} ;
+				if (typeof(menuEntity) === 'string'){
+					localMenuEntity.controller = menuEntity ;
+					localMenuEntity.model = menuEntity ;
+				} else {
+					localMenuEntity = menuEntity ;
+				}
+			%>
+			<div class="col-md-4">
+				<div class="pull-left panel panel-default">
+				  <div class="panel-heading">
+				    <h3 class="panel-title"> <span style="text-transform:capitalize"><%= i18n(localMenuEntity.controller) %></span>
+				    	<a style="float:right;margin-left:5px" href="/<%= localMenuEntity.controller %>"><span class="glyphicon glyphicon-th-list"></span></a>
+				    	<a style="float:right" href="/<%= localMenuEntity.controller %>/new"><span class="glyphicon glyphicon-plus"></span></a>
+				    </h3>
+				  </div>
+				  <div class="panel-body">
+				 	<table>
+						<% _.each(populatedMenuEntities[localMenuEntity.controller], function(record) { %>
+						<tr data-id="<%= record.id %>" data-model="record">
+							<td style="width:200px"><%= record.name %></td>
+							<td><a href="/<%= localMenuEntity.controller %>/show/<%= record.id %>" class="btn btn-sm btn-primary"><%= i18n("Show") %></a></td>
+							<td><a href="/<%= localMenuEntity.controller %>/edit/<%= record.id %>" class="btn btn-sm btn-warning"><%= i18n("Edit") %></a></td>
+						</tr>
+						<% }) %> 
+					</table>
+				  </div>
+				</div>
+			</div>
+			<% }); %>
+		</div>
+	</div>
+	<% }); %>
+</div>

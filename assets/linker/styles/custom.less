@@ -1,0 +1,183 @@
+/******************
+ * BOOSTRAP FIXING
+ *****************/
+
+.glyphicon-wrench:before {
+  content: "\e136";
+}
+
+/**********
+ * COLORS
+ *********/
+
+@white: #FFFFFF;
+@green: #9EC03B;
+@orange: #F48744;
+@blue: #189ECA;
+@gray: #777574;
+@lightGray: #ececec;
+@black: #1C1C1C;
+@darkBlue: #106E8D;
+@darkGray: #4A4A4A;   // paragraphs
+@red: #D16565; // error
+
+
+@media (max-width: 500px) {
+  .widthformedia{
+
+  }
+  .cw-font-size-md {
+    font-size: 0.6em;
+  }
+  .cw-font-size-sm {
+    font-size: 0.5em;
+  }
+  .cw-font-size-xs {
+    font-size: 0.4em;
+  }
+}
+
+@media (min-width: 500px) {
+  .widthformedia{
+    width:40%; 
+  }
+  .cwfontsizemd {
+    font-size: 1em;
+  }
+  .cw-font-size-sm {
+    font-size: 0.8em;
+  }
+  .cw-font-size-xs {
+    font-size: 0.6em;
+  }
+}
+
+
+
+body {
+	padding-top: 60px;
+	padding-bottom: 40px;
+}
+
+.jumbotron {
+	text-align: center;
+}
+
+.jumbotron h2 {
+  font-size: 1.5em;
+  letter-spacing: -1px;
+  margin-bottom: 30px;
+  text-align: center;
+  font-weight: normal;
+  color: gray;
+}
+
+.container {
+  .footer {
+    //width: 25%;
+  }
+}
+
+.marginbottom{
+  margin-bottom:15px;
+}
+
+.form-signin {
+max-width: 30%;
+padding: 19px 29px 29px;
+margin: 0 auto 20px;
+margin-top: 20px;
+background-color: @lightGray;
+border: 1px solid @green;
+-webkit-border-radius: 15px;
+-moz-border-radius: 15px;
+border-radius: 15px;
+
+  h2 {
+    text-align: center;
+    margin-top: 0px;
+  }
+}
+
+.form-base {
+max-width:100%;
+margin: 0 20px 20px 20px;
+}
+
+.form-base .control-group {
+  margin-bottom: 15px;
+}
+
+
+.form-signin input[type="text"],
+.form-signin input[type="password"] 
+.form-signin input[type="textarea"] {
+font-size: 16px;
+height: auto;
+padding: 7px 9px;
+}
+
+.form-signin select {
+font-size: 16px;
+margin-bottom: 15px;
+padding: 7px 9px;
+}
+
+.progress-bar-separator {
+  background-color: #CCCCCC;
+}
+
+.dropzone {
+  min-height: 100px !important;
+}
+
+/*sticky footer -based on Twitter Bootstraps' fixed navigation */
+/*- by Cristovao Verstraeten - apleasantview.com 2013 */
+/*Tip: you might need to add a bottom margin to your main content box*/
+
+._comments {
+  display: none;
+}
+
+.foot-pre-footer {
+  height:50px;
+} 
+.foot-fixed-bottom {
+ bottom: 0;
+ display: block;
+ left: 0;
+ margin-bottom: 0;
+ position: fixed;
+ right: 0;
+ z-index: 1030;
+ height:50px;
+ max-height: 200px;
+ background-color: rgba(0, 0, 0, 0.9);
+}
+.foot-fixed-bottom .container {
+ background-color: rgba(0, 0, 0, 0.8);
+ margin-left: auto;
+ margin-right: auto;
+ padding-bottom: 2px;
+}
+.foot-fixed-bottom hr {
+ border-image: none;
+ border-style: solid none;
+ border-width: 1px 0;
+ margin: 0 0 5px;
+ width: 100%;
+}
+.foot-fixed-bottom p {
+ color: rgb(66, 139, 202);
+ font-size: 14px;
+ margin: 0 12px 15px;
+ overflow: auto;
+}
+ 
+/*that's all folks!*/
+
+/* overriding for datepicker background to white */
+.bfh-datepicker-toggle>input[readonly] {
+  cursor: inherit;
+  background-color: white;
+}

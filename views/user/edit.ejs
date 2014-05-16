@@ -1,0 +1,44 @@
+	<form action="/user/update/<%= user.id %>" method="POST" class="form-signin form-base">
+		<h2> Hey, you're editing a user in '<%= user.group %>' group </h2>
+
+		<div class="control-group">
+			<input value="<%= user.name %>" name="name" type="text" class="form-control"/>
+		</div>
+		<div class="control-group">
+			<input value="<%= user.title %>" name="title" type="text" class="form-control"/>
+		</div>
+		<div class="control-group">
+			<input value="<%= user.email %>" name="email" type="text" class="form-control"/>
+		</div>
+
+		<div class="control-group">
+		<input type="password" class="form-control" placeholder="password" name="password" id="password">
+		</div>
+
+		<div class="control-group">
+		<input type="password" class="form-control" placeholder="password confirmation" name="confirmation">
+		</div>
+
+		<% if (session.authenticated && session.User.admin) { %>
+			<% if (user.admin) { %>
+				<input type="hidden" name="admin" value="unchecked">
+				<label class="checkbox"><input type="checkbox" name="admin" checked> Admin</label>
+			<% } else { %>
+				<input type="hidden" name="admin" value="unchecked">
+				<label class="checkbox"><input type="checkbox" name="admin"> Admin</label>
+			<% } %> 
+
+			<div class="control-group">
+				<label class="control-label" for="enduseragent">Group</label>
+				<div class="bfh-selectbox" data-name="group" data-value="<%= user.group %>" data-filter="false">
+					<div class="bfh-selectbox-option" data-value=""></div>
+					<% _.each(userGroups, function(group) { %>
+						<div class="bfh-selectbox-option" data-value="<%= group %>"><%= group %></div>
+					<% }) %>
+				</div>
+			</div>
+
+		<% } %> 
+		<input type="submit" value="Proceed" class="btn btn-lg btn-primary btn-block"/>
+		<input type="hidden" name="_csrf" value="<%= _csrf %>" />
+	</form>

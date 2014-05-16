@@ -1,0 +1,11 @@
+<div class="container">
+<br/>
+	<div class="well">
+		<% Object.keys(workflows).forEach(function(workflowKey) {  %>
+		<div class="row">
+			<div class="col-md-8"><h4><%= workflows[workflowKey].title %></h4><h6><%= workflows[workflowKey].description %></h6></div>
+			<div class="col-md-4"><h4><button class="btn-lg btn-block btn-info" onclick="window.location='/workflow/start?workflowname=<%= workflowKey %>'">Start</button></h4></div>
+		</div>
+		<% }) %>
+	</div>
+</div>

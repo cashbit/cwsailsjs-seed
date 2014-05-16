@@ -1,0 +1,49 @@
+<div class="container">
+	<h3>User Administration</h3>
+	<h5><a href="/user/new">Create a new user</a></h5>
+	<table class='table'>
+		<tr>
+			<th></th>
+			<th>ID</th>
+			<th>Name</th>
+			<th>Title</th>
+			<th>Email</th>
+			<th></th>
+			<th></th>
+			<th></th>
+		</tr>
+		
+
+		<% _.each(users, function(record) { %>
+		<tr data-id="<%= record.id %>" data-model="user">
+			<% if (record.online) { %>
+				<td><img src="/images/icon-online.png"></td>
+			<% } else { %>
+				<td> <img src="/images/icon-offline.png"></td>
+			<% } %>
+			<td><%= record.id %></td>
+			<td><%= record.name %></td>
+			<td><%= record.title %></td>
+			<td><%= record.email %></td>
+			<% if (record.admin) { %>
+				<td> <img src="/images/admin.png"></td>
+			<% } else { %>
+				<td> <img src="/images/pawn.png"></td>
+			<% } %>	
+			<td><a href="/user/show/<%= record.id %>" class="btn btn-sm btn-primary">Show</a></td>
+			<td><a href="/user/edit/<%= record.id %>" class="btn btn-sm btn-warning">Edit</a></td>
+
+			<td style="width:82px"><form action="../user/destroyUI/<%= record.id %>" method="POST">
+				<input type="hidden" name="_method" value="delete"/>
+				
+				<input id="deletebtn_<%= record.id %>" type="button" class="delconfirmbtn<%= record.id %> btn btn-sm btn-danger" value="Delete" onclick="$('.delconfirmbtn<%= record.id %>').toggleClass('hidden');"/>
+				
+				<input id="confirm_btn<%= record.id %>"type="submit" class="delconfirmbtn<%= record.id %> btn btn-sm btn-danger hidden" value="Confirm"/>
+				
+				<input type="hidden" name="_csrf" value="<%= _csrf %>" />
+			</form></td>
+		</tr> 
+
+		<% }) %>
+	</table>
+</div>

@@ -1,0 +1,90 @@
+<div class='container'>
+		
+	<div class="row">
+		<div class="col-md-8">
+			<h3>Me plus</h3>
+		</div>
+		<div class="col-md-4">
+			<h5 class="pull-right"><a href="/user/show/<%= session.User.id %>">Account settings</a></h5>
+		</div>
+	</div>
+
+	<table class='table'>
+		<tr>
+			<th>Title</th>
+			<th>Addedon</th>
+			<th>Due date</th>
+			<th></th>
+			<th></th>
+			<th></th>
+			<th></th>
+		</tr>
+		
+
+		<% _.each(mepluses, function(record) { %>
+		<tr data-id="<%= record.id %>" data-model="record">
+			<td><%= record.title %></td>
+			<td><%= record.createdAt.formatDate() %></td>
+			<% if (record.dueDate){
+				var dueDate = record.dueDate.formatDate() ;
+			} else {
+				var dueDate = "" ;
+			} %>
+			<td><%= dueDate %></td>
+			
+			<td><a href="<%= record.url %>" class="btn btn-sm btn-primary">Goto</a></td>
+			
+			<td style="width:82px">
+				<button class="btn btn-sm btn-warning" onclick="$('#editrow_<%= record.id %>').toggleClass('hidden')">Notes</button>
+			</form></td>
+
+			<td style="width:82px"><form action="/meplus/setReaded/<%= record.id %>" method="POST">
+
+				<input id="setReadedbtn_<%= record.id %>" type="button" class="setReadedconfirmbtn<%= record.id %> btn btn-sm btn-warning" value="Done" onclick="$('.setReadedconfirmbtn<%= record.id %>').toggleClass('hidden');"/>
+				
+				<input id="setReaded_btn<%= record.id %>"type="submit" class="setReadedconfirmbtn<%= record.id %> btn btn-sm btn-danger hidden" value="Confirm"/>
+				
+				<input type="hidden" name="_csrf" value="<%= _csrf %>" />
+			</form></td>
+
+			<td style="width:82px"><form action="/meplus/setReadedAndGoto/<%= record.id %>" method="POST">
+
+				<input id="setReadedGotobtn_<%= record.id %>" type="button" class="setReadedGotoconfirmbtn<%= record.id %> btn btn-sm btn-warning" value="Done &amp; Goto" onclick="$('.setReadedGotoconfirmbtn<%= record.id %>').toggleClass('hidden');"/>
+				
+				<input id="setReadedGoto_btn<%= record.id %>"type="submit" class="setReadedGotoconfirmbtn<%= record.id %> btn btn-sm btn-danger hidden" value="Confirm"/>
+				
+				<input type="hidden" name="_csrf" value="<%= _csrf %>" />
+			</form></td>
+
+			<td style="width:82px"><form action="/meplus/destroyUI/<%= record.id %>" method="POST">
+				<input type="hidden" name="_method" value="delete"/>
+				
+				<input id="deletebtn_<%= record.id %>" type="button" class="delconfirmbtn<%= record.id %> btn btn-sm btn-danger" value="Delete" onclick="$('.delconfirmbtn<%= record.id %>').toggleClass('hidden');"/>
+				
+				<input id="confirm_btn<%= record.id %>"type="submit" class="delconfirmbtn<%= record.id %> btn btn-sm btn-danger hidden" value="Confirm"/>
+				
+				<input type="hidden" name="_csrf" value="<%= _csrf %>" />
+			</form></td>
+		</tr> 
+		<tr id="editrow_<%= record.id %>"class="hidden">
+			<td colspan="8">
+				<form class="" action="/meplus/save/<%= record.id %>" method="POST">
+					<div class="control-group">
+						<label class="control-label" for="notes">Notes</label>
+						<div class="controls">
+							<textarea class="form-control" name="notes"><%= record.notes ? record.notes : "" %></textarea>
+						</div>
+
+					</div>
+
+					<input id="savebtn_<%= record.id %>" type="submit" class="saveconfirmbtn<%= record.id %> btn btn-sm btn-warning pull-right" value="Save" />				
+				
+					<input type="hidden" name="_csrf" value="<%= _csrf %>" />
+				</form>
+			</td>
+
+		</tr>
+
+		<% }) %>
+	</table>
+</div>

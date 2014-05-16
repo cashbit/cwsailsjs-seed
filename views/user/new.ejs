@@ -1,0 +1,38 @@
+<form action="/user/create" method="POST" id="sign-up-form" class="form-signin form-base">
+	<h2 class="form-signin-heading">Create a new user</h2>
+
+	<div class="control-group">
+	<input type="text" class="form-control" placeholder="your name" name="name">
+	</div>
+
+	<div class="control-group">
+	<input type="text" class="form-control" placeholder="your title" name="title">
+	</div>
+	
+	<div class="control-group">
+	<input type="text" class="form-control" placeholder="email address" name="email">
+	</div>
+
+	<div class="control-group">
+	<input type="password" class="form-control" placeholder="password" name="password" id="password">
+	</div>
+
+	<div class="control-group">
+	<input type="password" class="form-control" placeholder="password confirmation" name="confirmation">
+	</div>
+
+	<label class="control-label" for="enduseragent">Group</label>
+	<div class="bfh-selectbox" data-name="group" data-value="" data-filter="false">
+		<div class="bfh-selectbox-option" data-value=""></div>
+		<% _.each(userGroups, function(group) { %>
+			<div class="bfh-selectbox-option" data-value="group"><%= group %></div>
+		<% }) %>
+	</div>
+
+
+	<br />
+	
+
+	<input type="submit" class="btn btn-lg btn-primary btn-block" value="Create Account"/>
+	<input type="hidden" name="_csrf" value="<%= _csrf %>" />
+</form>

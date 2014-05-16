@@ -1,0 +1,23 @@
+<div class='container'>
+	<h1><a href="../">User</a>: <%= record.name %> </h1>
+
+	<% if (record.admin) { %>
+		<img src="/images/admin.png">admin
+	<% } else { %>
+			<img src="/images/pawn.png">pawn
+	<% } %>		
+	<h3>title: <%= record.title %> </h3>
+	<h3>contact: <%= record.email %> </h3>
+
+	
+	<a class="btn btn-sm btn-primary" href="/user/edit/<%= record.id %>">Edit</a>
+	<% if (session.authenticated  && session.User.admin) { %>
+	<form class="pull-right" action="../destroyUI/<%= record.id %>" method="POST">
+		<input type="hidden" name="_method" value="delete"/>
+		<input id="deletebtn_<%= record.id %>" type="button" class="delconfirmbtn<%= record.id %> btn btn-sm btn-danger" value="Delete" onclick="$('.delconfirmbtn<%= record.id %>').toggleClass('hidden');"/>
+		<input id="confirm_btn<%= record.id %>"type="submit" class="delconfirmbtn<%= record.id %> btn btn-sm btn-danger hidden" value="Confirm"/>
+		<input type="hidden" name="_csrf" value="<%= _csrf %>" />
+	</form>
+	<% } %>
+
+</div>

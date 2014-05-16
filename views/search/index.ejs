@@ -1,0 +1,29 @@
+<div class="container">
+	<h3>Search</h3>
+	<!--<h5><a href="/enduser/new">Create a new Enduser</a></h5>-->
+	<h4>"<%=searchText %>" :  <%= records.length == 0 ? "not found" : "found in "+records.length+" records"%></h4>
+	<table class='table'>
+
+		<% _.each(records, function(record) { %>
+		<tr data-id="<%= record.id %>" data-model="record">
+			<td>
+				<h4><%= record.title %></h4>
+				<div><span class="label label-info"><%= record.entity %></span> - updated on: <%= record.subTitle %></div>
+			</td>
+			<td style="vertical-align:middle"><a href="../<%= record.entity %>/show/<%= record.id %>" class="btn btn-sm btn-primary">Show</a></td>
+			<td style="vertical-align:middle"><a href="../<%= record.entity %>/edit/<%= record.id %>" class="btn btn-sm btn-warning">Edit</a></td>
+
+			<td style="vertical-align:middle"><form action="../<%= record.entity %>/destroyUI/<%= record.id %>" method="POST">
+				<input type="hidden" name="_method" value="delete"/>
+				
+				<input id="deletebtn_<%= record.entity %>_<%= record.id %>" type="button" class="delconfirmbtn_<%= record.entity %>_<%= record.id %> btn btn-sm btn-danger" value="Delete" onclick="$('.delconfirmbtn_<%= record.entity %>_<%= record.id %>').toggleClass('hidden');"/>
+				
+				<input id="confirm_btn_<%= record.entity %>_<%= record.id %>"type="submit" class="delconfirmbtn_<%= record.entity %>_<%= record.id %> btn btn-sm btn-danger hidden" value="Confirm"/>
+				
+				<input type="hidden" name="_csrf" value="<%= _csrf %>" />
+			</form></td>
+		</tr> 
+
+		<% }) %>
+	</table>
+</div>
