@@ -1,6 +1,9 @@
 module.exports = {
+
+	// default Application name
     appName : "SETTHEAPPNAMEINCONFIG",
 
+    // configured locales
     locale: {
 		it: {
 			dateFormat : "d/m/y"
@@ -10,6 +13,7 @@ module.exports = {
 		}
     },
 
+    // user groups and specific application name, home page, navigation bar menu
     userGroups:{
 		admin : {
 			appName: "ADMINAPPNAME",
@@ -20,9 +24,20 @@ module.exports = {
 					controller: "user"
 				}
 			]
+		},
+		guest : {
+			appName: "GUEST APP NAME",
+			home: "",
+			navmenu: [
+				{
+					title: "ControllerTitle",
+					controller: "ControllerName"
+				}
+			]
 		}
     },
 
+    // Search engine configuration. Each object defines the field and the entity where the search engine will search for the given string.
 	searchConfig : [
 		{
 			entity: "user",
@@ -35,6 +50,7 @@ module.exports = {
 		}
 	],
 
+	// Configuration for the TablesController
 	menuConfig: {
 		admin :{
 			maxItems: 10,
@@ -45,6 +61,7 @@ module.exports = {
 		}
 	},
 
+	// at first startup, if the user model is empty, this values will be created in each model-entity, feel free to add record for every model you create.
 	defaultValues : {
 		user: [
 			{
