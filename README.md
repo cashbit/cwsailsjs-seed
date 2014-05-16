@@ -62,7 +62,7 @@ mongo mynewapp -u mynewapp -p mysecret
 
 ### Adapters configuration
 
-Configurare i file: ```config\adapter.js``` e ```config\session.js``` indicando utenti e password come da precedenti configurazioni.
+Configurare i file: ```config/adapter.js``` e ```config/session.js``` indicando utenti e password come da precedenti configurazioni.
 
 
 ### App.js configuration
